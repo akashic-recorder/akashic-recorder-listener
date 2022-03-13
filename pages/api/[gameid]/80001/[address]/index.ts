@@ -1,7 +1,6 @@
 import Cors from 'cors'
 import initMiddleware from '../../../../../lib/init-middleware'
 import withDatabase from '../../../../../lib/database-middleware'
-import { Collection } from 'mongodb'
 import syncEvent from '../../../../../lib/sync-event'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -11,18 +10,15 @@ const cors = initMiddleware(
   })
 )
 
-interface NextApiRequestWithDB extends NextApiRequest {
-  db: Collection
-}
-
-const handler = async (req: NextApiRequestWithDB, res: NextApiResponse) => {
+const handler = async (req, res: NextApiResponse) => {
   const { query: {gameid, chainid, address }, method } = req
+  const addressLower = address.toLowerCase()
   await cors(req, res)
 
   switch (method) {
     case 'GET':
       try {
-        const resData = await req.db.find({wallet_address: address}).toArray()
+        const resData = await req.db.find({wallet_address: addressLower}).toArray()
         if (!Array.isArray(resData)) {
           throw new Error('Cannot find user data')
         }
