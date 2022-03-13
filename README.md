@@ -17,6 +17,10 @@ $ yarn dev
 
 ```
 $ export host=http://localhost:3000
+
+# for live demo
+# export host=https://akashic-recorder-listener.herokuapp.com
+
 $ export address=0xff93B45308FD417dF303D6515aB04D9e89a750Ca
 
 $ curl -X GET ${host}/api/1/80001/${address}
